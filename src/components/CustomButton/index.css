@@ -1,0 +1,11 @@
+.custom-button {
+    height: auto;
+}
+
+.custom-button:hover {
+    border-color: transparent;
+}
+
+.custom-button:focus {
+    outline: 0;
+}

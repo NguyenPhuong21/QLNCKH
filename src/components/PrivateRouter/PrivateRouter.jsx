@@ -9,11 +9,6 @@ const PrivateRouter = ({ children }) => {
   useEffect(() => {
     checkTokenExists();
   }, []);
-  const a = {
-    useName:"phuong",
-    passWord:"123456"
-  }
- local.set("token", a)
   const checkTokenExists = () => {
     let token = local.get("token");
     if (!token) {
@@ -25,7 +20,7 @@ const PrivateRouter = ({ children }) => {
     <React.Fragment>
       <Header />
       <div style={{ display: "flex", height: "100vh"}}>
-        <div style={{ width: "240px", backgroundColor: "pink" }}>
+        <div style={{ width: "240px" }}>
           <NavBar />
         </div>
         <div style={{ flex:1, background:'#fff', padding:5}}>{children}</div>
