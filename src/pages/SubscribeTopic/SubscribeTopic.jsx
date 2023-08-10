@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SubmitReport = () => {
+const SubscribeTopic = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const SubmitReport = () => {
   )
 }
 
-export default SubmitReport
+export default SubscribeTopic

@@ -9,73 +9,85 @@ import { listWorkIcon } from "../../assets";
 const AssignTopics = () => {
   
   const dataSource = [
-    {
+    { 
+      id:1,
       name: 'Đề tài nghiên cứu về nấm độc',
       code: '1921050467',
       instructors: 'Đinh Bảo Ngọc',
       status:'Đang chờ duyệt'
     },
     {
+      id:2,
       name: 'Đề tài nghiên cứ ứng dụng AI vào thăm khám chữa bệnh',
       code: '1921050437',
       instructors: 'Nguyễn Duy Huy',
       status:'Đang chờ duyệt'
     },
     {
+      id:3,
       name: 'Sản xuất đồ bảo hộ y tế tự hủy',
       code: '1921050467',
       instructors: 'Nông Thị Oanh',
       status:'Đang chờ duyệt'
     },
     {
+      id:4,
       name: 'Đề tài nghiên cứ ứng dụng AI vào thăm khám chữa bệnh',
       code: '1921050437',
       instructors: 'Nguyễn Duy Huy',
       status:'Đang chờ duyệt'
     },
     {
+      id:5,
       name: 'Đề tài nghiên cứu về nấm độc',
       code: '1921050467',
       instructors: 'Đinh Bảo Ngọc',
       status:'Đang chờ duyệt'
     },
     {
+      id:6,
       name: 'Đề tài nghiên cứ ứng dụng AI vào thăm khám chữa bệnh',
       code: '1921050437',
       instructors: 'Nguyễn Duy Huy',
       status:'Đang chờ duyệt'
     },
     {
+      id:7,
       name: 'Đề tài nghiên cứu về nấm độc',
       code: '1921050467',
       instructors: 'Đinh Bảo Ngọc',
       status:'Đang chờ duyệt'
     },
     {
+      id:8,
       name: 'Đề tài nghiên cứ ứng dụng AI vào thăm khám chữa bệnh',
       code: '1921050437',
       instructors: 'Nguyễn Duy Huy',
       status:'Đang chờ duyệt'
     },
     {
+      id:9,
       name: 'Đề tài nghiên cứu về nấm độc',
       code: '1921050467',
       instructors: 'Đinh Bảo Ngọc',
       status:'Đang chờ duyệt'
     },
     {
+      id:10,
       name: 'Đề tài nghiên cứ ứng dụng AI vào thăm khám chữa bệnh',
       code: '1921050437',
       instructors: 'Nguyễn Duy Huy',
       status:'Đang chờ duyệt'
     },
     {
+      id:11,
       name: 'Đề tài nghiên cứu về nấm độc',
       code: '1921050467',
       instructors: 'Đinh Bảo Ngọc',
       status:'Đang chờ duyệt'
     },
     {
+      id:12,
       name: 'Đề tài nghiên cứ ứng dụng AI vào thăm khám chữa bệnh',
       code: '1921050437',
       instructors: 'Nguyễn Duy Huy',
@@ -85,14 +97,23 @@ const AssignTopics = () => {
   
   const columns = [
     {
+      title: 'STT',
+      dataIndex: 'id',
+      key: 'id',
+      width: 60
+    },
+    {
       title: 'Tên đề tài',
       dataIndex: 'name',
       key: 'name',
+      width: 400
     },
     {
       title: 'Mã sinh viên',
       dataIndex: 'code',
       key: 'code',
+      width: 140,
+      align: "center",
     },
     {
       title: 'Giáo viên hướng dẫn',

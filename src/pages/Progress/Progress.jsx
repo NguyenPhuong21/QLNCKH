@@ -1,6 +1,6 @@
 import React from 'react'
 
-const BoardAssignment = () => {
+const Progress = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const BoardAssignment = () => {
   )
 }
 
-export default BoardAssignment
+export default Progress

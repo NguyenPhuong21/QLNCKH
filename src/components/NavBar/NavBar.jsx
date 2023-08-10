@@ -9,38 +9,62 @@ import {
   CheckOutlined,
   CheckCircleOutlined,
   ClusterOutlined,
+  BarChartOutlined,
+  ContactsOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Divider } from 'antd';
 
 const { SubMenu } = Menu;
 
 const NavBar = () => {
   return (
     <div className="App">
+      <Divider type="horizontal" style={{ color: 'red' }} />
+      <p>MAIN</p>
       <Menu mode="inline" style={{ width: "100%" }}>
         <Menu.Item key="dashboard" icon={<DashboardOutlined />}>
-          <Link to="/Dashboard">Dashboard</Link>
+          <Link to="/Dashboard">Trang chủ</Link>
         </Menu.Item>
         <Menu.Item key="congress" icon={<ClusterOutlined />}>
           <Link to="/Congress">Đại hội</Link>
         </Menu.Item>
-        <SubMenu key="topic" title="Đề Tài" icon={<FileOutlined />}>
+        <SubMenu key="topic" title="Đề Tài" icon={<BarChartOutlined />}>
           <Menu.Item key="assignTopics" icon={<RightOutlined />}>
-          <Link to="/AssignTopics">Phân công đề tài</Link>
+            <Link to="/AssignTopics">Danh sách đề tài</Link>
           </Menu.Item>
-          <Menu.Item key="boardAssignment" icon={<RightOutlined />}>
-          <Link to="/BoardAssignment">Phân công hội đồng</Link>
+          <Menu.Item key="progress" icon={<RightOutlined />}>
+            <Link to="/Progress">Tiến độ</Link>
           </Menu.Item>
           <Menu.Item key="extend" icon={<RightOutlined />}>
-          <Link to="/Extend"> Gia hạn</Link>
+            <Link to="/Extend">Gia hạn</Link>
           </Menu.Item>
-          <Menu.Item key="submitReport" icon={<RightOutlined />}>
-          <Link to="/SubmitReport">Nộp báo cáo</Link>
+          <Menu.Item key="subscribeTopic" icon={<RightOutlined />}>
+            <Link to="/SubscribeTopic">Đăng kí đề tài</Link>
           </Menu.Item>
         </SubMenu>
         <Menu.Item key="viewAssessment" icon={<SolutionOutlined />}>
-          Xem đánh giá
+          <Link to="/">Phân công</Link>
         </Menu.Item>
+        <Menu.Item key="mark" icon={<CheckCircleOutlined />}>
+          <Link to="/"> Chấm điểm</Link>
+        </Menu.Item>
+        <SubMenu key="topic" title="Danh mục" icon={<ContactsOutlined />}>
+          <Menu.Item key="facultyManagement" icon={<RightOutlined />}>
+            <Link to="/FacultyManagement">Quản lý khoa</Link>
+          </Menu.Item>
+          <Menu.Item key="boardAssignment" icon={<RightOutlined />}>
+            <Link to="/">Quản lý ngành</Link>
+          </Menu.Item>
+          <Menu.Item key="extend" icon={<RightOutlined />}>
+            <Link to="/">Quản lý giảng viên</Link>
+          </Menu.Item>
+          <Menu.Item key="submitReport" icon={<RightOutlined />}>
+            <Link to="/">Quản lý sinh viên</Link>
+          </Menu.Item>
+        </SubMenu>
+
+        {/* 
         <Menu.Item key="topicList" icon={<FileOutlined />}>
           Danh sách đề tài
         </Menu.Item>
@@ -49,11 +73,13 @@ const NavBar = () => {
         </Menu.Item>
         <Menu.Item key="acceptance" icon={<CheckOutlined />}>
           Nghiệm thu
-        </Menu.Item>
-        <Menu.Item key="result" icon={<CheckCircleOutlined />}>
+        </Menu.Item> */}
+        {/* <Menu.Item key="result" icon={<CheckCircleOutlined />}>
           kết quả
-        </Menu.Item>
+        </Menu.Item> */}
       </Menu>
+      <Divider type="horizontal" style={{ color: 'red', marginTop:'30px' }} />
+      <p>Setting</p>
     </div>
   );
 };

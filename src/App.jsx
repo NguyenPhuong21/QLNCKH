@@ -3,8 +3,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  Redirect,
 } from "react-router-dom";
 import PrivateRouter from "./components/PrivateRouter";
 import Login from "./pages/Login";
@@ -13,9 +11,10 @@ import Dashboard from "./pages/Dashboard";
 import Congress from "./pages/Congress";
 import './App.css'
 import AssignTopics from "./pages/AssignTopics";
-import BoardAssignment from "./pages/BoardAssignment";
+import Progress from "./pages/Progress";
 import Extend from "./pages/Extend";
-import SubmitReport from "./pages/SubmitReport";
+import SubscribeTopic from "./pages/SubscribeTopic";
+import FacultyManagement from "./pages/FacultyManagement";
 
 const App = () => {
   return (
@@ -37,14 +36,18 @@ const App = () => {
           <Route exact path="/AssignTopics">
             <AssignTopics />
           </Route>
-          <Route exact path="/BoardAssignment">
-            <BoardAssignment />
+          <Route exact path="/Progress">
+            <Progress />
           </Route>
           <Route exact path="/Extend">
             <Extend />
           </Route>
-          <Route exact path="/SubmitReport">
-            <SubmitReport />
+          <Route exact path="/SubscribeTopic">
+            <SubscribeTopic />
+          </Route>
+          {/* quản lý khoa */}
+          <Route exact path="/FacultyManagement">
+            <FacultyManagement />
           </Route>
         </PrivateRouter>
       </Switch>
