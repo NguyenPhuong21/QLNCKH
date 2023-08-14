@@ -15,6 +15,7 @@ import Progress from "./pages/Progress";
 import Extend from "./pages/Extend";
 import SubscribeTopic from "./pages/SubscribeTopic";
 import FacultyManagement from "./pages/FacultyManagement";
+import IndustryManagement from "./pages/IndustryManagement/IndustryManagement";
 
 const App = () => {
   return (
@@ -49,6 +50,11 @@ const App = () => {
           <Route exact path="/FacultyManagement">
             <FacultyManagement />
           </Route>
+ `          {/* quản lý Ngành */}
+          <Route exact path="/IndustryManagement">
+            <IndustryManagement />
+          </Route>
+          
         </PrivateRouter>
       </Switch>
     </Router>

@@ -1,11 +1,89 @@
-import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input, Space } from "antd";
+import React, { useEffect, useState } from "react";
+import { Table, Button, Modal, Form, Input, Space, notification } from "antd";
+import { get, Post, Put, Delete} from "../../services/Api";
+
 // import 'antd/dist/antd.css';
 
 const FacultyManagement = () => {
   const [faculties, setFaculties] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [mode, setMode] = useState("create");
+  const [id, setId] = useState(null);
+
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    handleGetFacutyManagement();
+  }, []);
+
+  const handleGetFacutyManagement = async () => {
+    try {
+      let obj = {
+        url: "/khoas",
+      };
+      const response = await get(obj);
+      const extractedData = response.data.map((item) => ({
+        key: item.id,
+        id: item.id,
+        Ten_khoa: item.attributes.Ten_khoa,
+      }));
+      setFaculties(extractedData);
+    } catch (error) {
+      console.error("Error faculyty:", error);
+    }
+  };
+
+  const handlePostFacutyManagement = async () => {
+    let obj;
+    try {
+      if (!id) {
+        obj = {
+          url: "/khoas",
+          data: {
+            data: {
+              Ten_khoa: form.getFieldValue("Ten_khoa"),
+            },
+          },
+        };
+        await Post(obj);
+      } else {
+        obj = {
+          url: `/khoas/${id}`,
+          data: {
+            data: {
+              Ten_khoa: form.getFieldValue("Ten_khoa"),
+            },
+          },
+        };
+        await Put(obj);
+      }
+      form.resetFields();
+      handleGetFacutyManagement();
+      setVisible(false);
+      return response;
+    } catch (error) {
+      console.error("Error faculyty:", error);
+    }
+  };
+
+  const handleDeleteFacutyManagement = async (record) => {
+    let obj = {
+      url: `/khoas/${record.id}`,
+      data: {
+        data: {
+          Ten_khoa: form.getFieldValue("Ten_khoa"),
+        },
+      },
+    };
+    const res = await Delete(obj);
+    if (res.status == "SUCCESS") {
+      notification.success({
+        message: "Đã xóa thành công",
+        duration: 3,
+      });
+    }
+    handleGetFacutyManagement();
+  };
 
   const columns = [
     {
@@ -15,34 +93,24 @@ const FacultyManagement = () => {
     },
     {
       title: "Tên khoa",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Ngành",
-      dataIndex: "code",
-      key: "code",
-    },
-    {
-      title: "Hội đồng nghiệm thu",
-      dataIndex: "ma_khoa",
-      key: "ma_khoa",
-    },
-    {
-      title: "Hội đồng duyệt đề cương",
-      dataIndex: "code",
-      key: "code",
+      dataIndex: "Ten_khoa",
+      key: "Ten_khoa",
     },
     {
       title: "Hành động",
       key: "action",
-      align: 'center',
+      align: "center",
       render: (_, record) => (
         <Space size="middle">
-          <Button onClick={() => handleEdit(record)}>sửa</Button>
-          <Button onClick={() => handleDelete(record.id)} >
-            Xóa
+          <Button
+            onClick={() => {
+              setMode("edit");
+              handleEdit(record);
+            }}
+          >
+            sửa
           </Button>
+          <Button onClick={() => handleDeleteFacutyManagement(record)}>Xóa</Button>
         </Space>
       ),
     },
@@ -50,6 +118,7 @@ const FacultyManagement = () => {
 
   const showModal = () => {
     setVisible(true);
+    setMode("create");
   };
 
   const handleCancel = () => {
@@ -57,42 +126,34 @@ const FacultyManagement = () => {
     form.resetFields();
   };
 
-  const handleSave = () => {
-    form.validateFields().then((values) => {
-      const newFaculty = {
-        id: faculties.length + 1,
-        name: values.name,
-      };
-      setFaculties([...faculties, newFaculty]);
-      form.resetFields();
-      setVisible(false);
-    });
-  };
-
   const handleEdit = (record) => {
     form.setFieldsValue(record);
+    setId(record.id);
     showModal();
   };
 
-  const handleDelete = (id) => {
-    setFaculties(faculties.filter((faculty) => faculty.id !== id));
-  };
+  // const handleDelete = (id) => {
+  //   setFaculties(faculties.filter((faculty) => faculty.id !== id));
+  // };
 
   return (
     <div>
-      <Button type="primary" onClick={showModal} style={{display:'flex', justifyContent:'flex-end'}}>
-        Thêm khoa
-      </Button>
+      <div className="heading">Quản lý khoa</div>
+      <div style={{display:'flex', justifyContent:'flex-end', margin: 16}}>
+        <Button type="primary" onClick={showModal}>
+          Thêm khoa
+        </Button>
+      </div>
       <Table columns={columns} dataSource={faculties} rowKey="id" />
       <Modal
         visible={visible}
         title="Add/Edit Faculty"
         onCancel={handleCancel}
-        onOk={handleSave}
+        onOk={handlePostFacutyManagement}
       >
         <Form form={form} layout="vertical">
           <Form.Item
-            name="name"
+            name="Ten_khoa"
             label="Faculty Name"
             rules={[{ required: true, message: "Please enter faculty name" }]}
           >

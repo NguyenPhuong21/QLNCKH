@@ -53,8 +53,8 @@ const NavBar = () => {
           <Menu.Item key="facultyManagement" icon={<RightOutlined />}>
             <Link to="/FacultyManagement">Quản lý khoa</Link>
           </Menu.Item>
-          <Menu.Item key="boardAssignment" icon={<RightOutlined />}>
-            <Link to="/">Quản lý ngành</Link>
+          <Menu.Item key="industryManagement" icon={<RightOutlined />}>
+            <Link to="/IndustryManagement">Quản lý ngành</Link>
           </Menu.Item>
           <Menu.Item key="extend" icon={<RightOutlined />}>
             <Link to="/">Quản lý giảng viên</Link>
