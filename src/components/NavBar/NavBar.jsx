@@ -49,18 +49,18 @@ const NavBar = () => {
         <Menu.Item key="mark" icon={<CheckCircleOutlined />}>
           <Link to="/"> Chấm điểm</Link>
         </Menu.Item>
-        <SubMenu key="topic" title="Danh mục" icon={<ContactsOutlined />}>
+        <SubMenu key="Category" title="Danh mục" icon={<ContactsOutlined />}>
           <Menu.Item key="facultyManagement" icon={<RightOutlined />}>
             <Link to="/FacultyManagement">Quản lý khoa</Link>
           </Menu.Item>
           <Menu.Item key="industryManagement" icon={<RightOutlined />}>
             <Link to="/IndustryManagement">Quản lý ngành</Link>
           </Menu.Item>
-          <Menu.Item key="extend" icon={<RightOutlined />}>
-            <Link to="/">Quản lý giảng viên</Link>
+          <Menu.Item key="lecturersManagement" icon={<RightOutlined />}>
+            <Link to="/LecturersManagement">Quản lý giảng viên</Link>
           </Menu.Item>
-          <Menu.Item key="submitReport" icon={<RightOutlined />}>
-            <Link to="/">Quản lý sinh viên</Link>
+          <Menu.Item key="studentManagement" icon={<RightOutlined />}>
+            <Link to="/StudentManagement">Quản lý sinh viên</Link>
           </Menu.Item>
         </SubMenu>
 

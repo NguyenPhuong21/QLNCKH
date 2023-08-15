@@ -1,21 +1,19 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRouter from "./components/PrivateRouter";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Congress from "./pages/Congress";
-import './App.css'
+import "./App.css";
 import AssignTopics from "./pages/AssignTopics";
 import Progress from "./pages/Progress";
 import Extend from "./pages/Extend";
 import SubscribeTopic from "./pages/SubscribeTopic";
 import FacultyManagement from "./pages/FacultyManagement";
 import IndustryManagement from "./pages/IndustryManagement/IndustryManagement";
+import LecturersManagement from "./pages/LecturersManagement";
+import StudentManagement from "./pages/StudentManagement";
 
 const App = () => {
   return (
@@ -50,9 +48,17 @@ const App = () => {
           <Route exact path="/FacultyManagement">
             <FacultyManagement />
           </Route>
- `          {/* quản lý Ngành */}
+          ` {/* quản lý Ngành */}
           <Route exact path="/IndustryManagement">
             <IndustryManagement />
+          </Route>
+          {/* quản lý giảng viên */}
+          <Route exact path="/LecturersManagement">
+            <LecturersManagement />
+          </Route>
+          {/* quản lý sinh viên */}
+          <Route exact path="/StudentManagement">
+            <StudentManagement />
           </Route>
           
         </PrivateRouter>
