@@ -11,10 +11,17 @@ import {
   DatePicker,
 } from "antd";
 import { get, Post, Put, Delete } from "../../services/Api";
-import dayjs from "dayjs";
+
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
+import dayjs from "dayjs";
+
 dayjs.extend(customParseFormat);
+// import weekday from "dayjs/plugin/weekday";
+// import localeData from "dayjs/plugin/localeData";
+
+// dayjs.extend(weekday);
+// dayjs.extend(localeData);
 
 const LecturersManagement = () => {
   const [lecturers, setLecturers] = useState([]);
@@ -25,7 +32,7 @@ const LecturersManagement = () => {
   const [id, setId] = useState(null);
 
   const [form] = Form.useForm();
-  const dateFormat = "YYYY/MM/DD";
+  const dateFormat = "DD/MM/YYYY";
   useEffect(() => {
     handleGetLecturersManagement();
     handleGetFacultyManagement();
@@ -96,9 +103,10 @@ const LecturersManagement = () => {
             data: {
               MaSoGiangVien: form.getFieldValue("MaSoGiangVien"),
               TenGiangVien: form.getFieldValue("TenGiangVien"),
-              nganh: form.getFieldValue("nganh"),
-              khoa: form.getFieldValue("khoa"),
-              TrinhDo:form.getFieldValue("TrinhDo")
+              nganh: form.getFieldValue("Ten_nganh"),
+              khoa: form.getFieldValue("Ten_khoa"),
+              TrinhDo: form.getFieldValue("TrinhDo"),
+              NgaySinh: form.getFieldValue("NgaySinh"),
             },
           },
         };
@@ -110,9 +118,10 @@ const LecturersManagement = () => {
             data: {
               MaSoGiangVien: form.getFieldValue("MaSoGiangVien"),
               TenGiangVien: form.getFieldValue("TenGiangVien"),
-              nganh: form.getFieldValue("nganh"),
-              khoa: form.getFieldValue("khoa"),
-              TrinhDo:form.getFieldValue("TrinhDo")
+              nganh: form.getFieldValue("Ten_nganh"),
+              khoa: form.getFieldValue("Ten_khoa"),
+              TrinhDo: form.getFieldValue("TrinhDo"),
+              NgaySinh: form.getFieldValue("NgaySinh"),
             },
           },
         };
@@ -259,7 +268,7 @@ const LecturersManagement = () => {
             <div style={{ width: "48%" }}>
               <Form.Item
                 label="Chọn khoa"
-                name="khoa"
+                name="Ten_khoa"
                 rules={[
                   { required: true, message: "Vui lòng chọn khoa tương ứng" },
                 ]}
@@ -277,6 +286,7 @@ const LecturersManagement = () => {
                       .toLowerCase()
                       .localeCompare((optionB?.label ?? "").toLowerCase())
                   }
+                  // value={}
                   options={faculties.map((item) => {
                     return {
                       label: item?.Ten_khoa,
@@ -289,7 +299,7 @@ const LecturersManagement = () => {
             <div style={{ width: "48%" }}>
               <Form.Item
                 label="Chọn ngành"
-                name="nganh"
+                name="Ten_nganh"
                 rules={[
                   { required: true, message: "Vui lòng chọn ngành tương ứng" },
                 ]}
@@ -330,8 +340,12 @@ const LecturersManagement = () => {
               </Form.Item>
             </div>
             <div style={{ width: "48%" }}>
-              <Form.Item name="Ngày sinh" label="Thêm ngày sinh">
-                <DatePicker format={dateFormat} />
+              <Form.Item name="NgaySinh" label="Thêm ngày sinh">
+                <DatePicker
+                  format={dateFormat}
+                  placeholder="Chọn ngày sinh"
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </div>
           </div>

@@ -11,16 +11,11 @@ import {
   DatePicker,
 } from "antd";
 import { get, Post, Put, Delete } from "../../services/Api";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-
-dayjs.extend(customParseFormat);
 
 const StudentManagement = () => {
   const [lecturers, setLecturers] = useState([]);
   const [visible, setVisible] = useState(false);
   const [mode, setMode] = useState("create");
-  const [faculties, setFaculties] = useState([]);
   const [industry, setIndustry] = useState([]);
   const [id, setId] = useState(null);
 
@@ -28,7 +23,6 @@ const StudentManagement = () => {
   const dateFormat = "YYYY/MM/DD";
   useEffect(() => {
     handleGetStudentManagement();
-    handleGetFacultyManagement();
     handleGetIndustryManagement();
   }, []);
 
@@ -44,26 +38,9 @@ const StudentManagement = () => {
         MaSoSinhVien: item.attributes?.MaSoSinhVien,
         TenGiangVien: item.attributes?.TenGiangVien,
         HoTen: item.attributes?.HoTen,
-        Ten_khoa: item.attributes?.khoa?.data?.attributes?.Ten_khoa,
         Ten_nganh: item.attributes?.nganh?.data?.attributes?.Ten_nganh,
       }));
       setLecturers(extractedData);
-    } catch (error) {
-      console.error("Error faculyty:", error);
-    }
-  };
-  const handleGetFacultyManagement = async () => {
-    try {
-      let obj = {
-        url: "/khoas",
-      };
-      const response = await get(obj);
-      const extractedData = response.data.map((item) => ({
-        key: item.id,
-        id: item.id,
-        Ten_khoa: item.attributes?.Ten_khoa,
-      }));
-      setFaculties(extractedData);
     } catch (error) {
       console.error("Error faculyty:", error);
     }
@@ -78,7 +55,7 @@ const StudentManagement = () => {
       const extractedData = response.data.map((item) => ({
         key: item.id,
         id: item.id,
-        Ten_nganh: item.attributes?.Ten_nganh,
+        nganh: item.attributes?.Ten_nganh,
       }));
       setIndustry(extractedData);
     } catch (error) {
@@ -94,10 +71,18 @@ const StudentManagement = () => {
           url: "/sinh-viens",
           data: {
             data: {
-              MaSoGiangVien: form.getFieldValue("MaSoGiangVien"),
-              TenGiangVien: form.getFieldValue("TenGiangVien"),
-              nganh: form.getFieldValue("nganh"),
-              khoa: form.getFieldValue("khoa"),
+              MaSoSinhVien: form.getFieldValue("MaSoSinhVien"),
+              TenSinhVien: form.getFieldValue("TenSinhVien"),
+              nganh: form.getFieldValue("Ten_nganh"),
+              NgaySinh: form.getFieldValue("NgaySinh"),
+              CCCD: form.getFieldValue("CCCD"),
+              TkNganHang:form.getFieldValue("TkNganHang"),
+              SDT:form.getFieldValue("SDT"),
+              Lop:form.getFieldValue("Lop"),
+              NienKhoa:form.getFieldValue("NienKhoa"),
+              GioiTinh:form.getFieldValue("GioiTinh"),
+              DiaChi:form.getFieldValue("DiaChi"),
+              ChiNhanhNH:form.getFieldValue("ChiNhanhNH"),
             },
           },
         };
@@ -109,8 +94,16 @@ const StudentManagement = () => {
             data: {
               MaSoGiangVien: form.getFieldValue("MaSoGiangVien"),
               TenGiangVien: form.getFieldValue("TenGiangVien"),
-              nganh: form.getFieldValue("nganh"),
-              khoa: form.getFieldValue("khoa"),
+              nganh: form.getFieldValue("Ten_nganh"),
+              NgaySinh: form.getFieldValue("NgaySinh"),
+              CCCD: form.getFieldValue("CCCD"),
+              TkNganHang:form.getFieldValue("TkNganHang"),
+              SDT:form.getFieldValue("SDT"),
+              Lop:form.getFieldValue("Lop"),
+              NienKhoa:form.getFieldValue("NienKhoa"),
+              GioiTinh:form.getFieldValue("GioiTinh"),
+              DiaChi:form.getFieldValue("DiaChi"),
+              ChiNhanhNH:form.getFieldValue("ChiNhanhNH"),
             },
           },
         };
@@ -219,8 +212,8 @@ const StudentManagement = () => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ width: "48%" }}>
               <Form.Item
-                name="MaSoGiangVien"
-                label="Thêm mã giảng viên"
+                name="MaSoSinhVien"
+                label="Thêm mã sinh viên"
                 rules={[
                   {
                     required: true,
@@ -233,8 +226,8 @@ const StudentManagement = () => {
             </div>
             <div style={{ width: "48%" }}>
               <Form.Item
-                name="TenGiangVien"
-                label="Thêm tên giảng viên"
+                name="HoTen"
+                label="Thêm tên sinh viên"
                 rules={[
                   { required: true, message: " Vui lòng nhập vào giảng viên" },
                 ]}
@@ -246,38 +239,8 @@ const StudentManagement = () => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ width: "48%" }}>
               <Form.Item
-                label="Chọn khoa"
-                name="khoa"
-                rules={[
-                  { required: true, message: "Vui lòng chọn khoa tương ứng" },
-                ]}
-              >
-                <Select
-                  showSearch
-                  style={{ width: "100%", marginBottom: 16 }}
-                  placeholder="Chọn khoa tương ứng"
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
-                  filterSort={(optionA, optionB) =>
-                    (optionA?.label ?? "")
-                      .toLowerCase()
-                      .localeCompare((optionB?.label ?? "").toLowerCase())
-                  }
-                  options={faculties.map((item) => {
-                    return {
-                      label: item?.Ten_khoa,
-                      value: item.id,
-                    };
-                  })}
-                />
-              </Form.Item>
-            </div>
-            <div style={{ width: "48%" }}>
-              <Form.Item
                 label="Chọn ngành"
-                name="nganh"
+                name="Ten_nganh"
                 rules={[
                   { required: true, message: "Vui lòng chọn ngành tương ứng" },
                 ]}
@@ -304,22 +267,99 @@ const StudentManagement = () => {
                 />
               </Form.Item>
             </div>
+            <div style={{ width: "48%" }}>
+              <Form.Item name="NgaySinh" label="Thêm ngày sinh">
+                <DatePicker
+                  format={dateFormat}
+                  placeholder="Chọn ngày sinh"
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ width: "48%" }}>
               <Form.Item
-                name="TrinhDo"
-                label="Thêm trình độ"
+                name="CCCD"
+                label="Căn cước công dân"
                 rules={[
-                  { required: true, message: " Vui lòng nhập vào trình độ" },
+                  {
+                    required: true,
+                    message: " Vui lòng nhập vào Căn cước công dân",
+                  },
                 ]}
               >
                 <Input />
               </Form.Item>
             </div>
             <div style={{ width: "48%" }}>
-              <Form.Item name="Ngày sinh" label="Thêm ngày sinh">
-                <DatePicker format={dateFormat} />
+              <Form.Item name="TkNganHang" label="Tài khoản ngân hàng">
+                <Input />
+              </Form.Item>
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ width: "48%" }}>
+              <Form.Item name="SDT" label="Số điện thoại">
+                <Input />
+              </Form.Item>
+            </div>
+            <div style={{ width: "48%" }}>
+            <Form.Item name="Lop" label="Lớp">
+                <Input />
+              </Form.Item>
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ width: "48%" }}>
+              <Form.Item name="NienKhoa" label="Niên Khóa">
+                <Input />
+              </Form.Item>
+            </div>
+            <div style={{ width: "48%" }}>
+              <Form.Item
+                label="Giới tính"
+                name="GioiTinh"
+                rules={[{ required: true, message: "Vui lòng chọn Giới tính" }]}
+              >
+                <Select
+                  showSearch
+                  style={{ width: "100%", marginBottom: 16 }}
+                  placeholder="Chọn giới tính tương ứng"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  filterSort={(optionA, optionB) =>
+                    (optionA?.label ?? "")
+                      .toLowerCase()
+                      .localeCompare((optionB?.label ?? "").toLowerCase())
+                  }
+                  options={industry.map((item) => {
+                    return {
+                      label: item?.Ten_nganh,
+                      value: item.id,
+                    };
+                  })}
+                />
+              </Form.Item>
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ width: "48%" }}>
+              <Form.Item
+                name="DiaChi"
+                label="Địa chỉ"
+                rules={[
+                  { required: true, message: " Vui lòng nhập vào Địa chỉ" },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </div>
+            <div style={{ width: "48%" }}>
+              <Form.Item name="ChiNhanhNH" label="Chi nhánh">
+                <Input />
               </Form.Item>
             </div>
           </div>
@@ -330,4 +370,3 @@ const StudentManagement = () => {
 };
 
 export default StudentManagement;
-
