@@ -14,8 +14,6 @@ const SubscribeTopic = () => {
   const showModal = () => {
     setIsModalOpen(true);
   };
-
-  console.log({ students });
   const handleOk = () => {
     setIsModalOpen(false);
   };

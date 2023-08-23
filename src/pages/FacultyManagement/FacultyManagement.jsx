@@ -147,15 +147,15 @@ const FacultyManagement = () => {
       <Table columns={columns} dataSource={faculties} rowKey="id" />
       <Modal
         visible={visible}
-        title="Add/Edit Faculty"
+        title="Thêm/sửa khoa"
         onCancel={handleCancel}
         onOk={handlePostFacutyManagement}
       >
         <Form form={form} layout="vertical">
           <Form.Item
             name="Ten_khoa"
-            label="Faculty Name"
-            rules={[{ required: true, message: "Please enter faculty name" }]}
+            label="Tên khoa"
+            rules={[{ required: true, message: "Vui lòng nhập vào tên khoa" }]}
           >
             <Input />
           </Form.Item>

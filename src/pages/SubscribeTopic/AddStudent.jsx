@@ -2,22 +2,25 @@ import React, { useState } from "react";
 import { Button, Modal, Form, Input } from "antd";
 
 function AddStudent({ setStudentList, id, lastId, deleteStd }) {
+  
   const [student] = useState({ id: ++id, name: "", msv: "" });
-
+  const [name,SetName] = useState("");
+  const [msv,SetMsv] = useState("");
   const handleChangeName = (e) => {
-    console.log(id);
-    // setStudentList((prev) => {
-    //   const std = prev.find((s, i) => s.id === id);
-    //   console.log(std);
-    //   if (std) {
-    //     std.name = e.target.value;
-    //     return [...prev];
-    //   }
-    // });
+    SetName(e.target.value)
+    setStudentList((prev) => {
+      const std = prev.find((s, i) => s.id === (id-1));
+      console.log(std);
+      if (std) {
+        std.name = e.target.value;
+        return [...prev];
+      }
+    });
   };
   const handleChangeId = (e, id) => {
+    SetMsv(e.target.value)
     setStudentList((prev) => {
-      const std = prev.find((s, i) => s.id === id);
+      const std = prev.find((s, i) => s.id === (id-1));
       if (std) {
         std.msv = e.target.value;
         return [...prev];
@@ -61,7 +64,7 @@ function AddStudent({ setStudentList, id, lastId, deleteStd }) {
           <Input value={student.id} onChange={(e) => handleChangeId(e, id)} />
         </Form.Item>
       </div>
-      {lastId === id && id != 1 && (
+      {lastId === (id-1)  && name !=""&& msv !="" &&  (
         <Button
           onClick={() => setStudentList((std) => [...std, student])}
           type="primary"
@@ -69,7 +72,7 @@ function AddStudent({ setStudentList, id, lastId, deleteStd }) {
           +
         </Button>
       )}
-      <Button type="primary" danger onClick={() => deleteStd(id)}>
+      <Button type="primary" danger onClick={() => deleteStd(id-1)}>
         x
       </Button>
     </div>
