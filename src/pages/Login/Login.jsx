@@ -17,6 +17,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [jwtToken, setJwtToken] = useState("");
   const [isForgot, setIsForgot] = useState(false);
+
   useEffect(() => {
     checkTokenExists();
   }, []);
@@ -43,6 +44,7 @@ const Login = () => {
       }
       const data = await response.json();
       local.set("token", data.jwt);
+      local.set("user", data.user);
       history.push("/");
       setJwtToken(data.jwt);
       setErrorMessage("");

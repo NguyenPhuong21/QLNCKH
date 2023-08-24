@@ -36,9 +36,15 @@ const StudentManagement = () => {
         key: item.id,
         id: item.id,
         MaSoSinhVien: item.attributes?.MaSoSinhVien,
-        TenGiangVien: item.attributes?.TenGiangVien,
+        HoTen: item.attributes?.HoTen,
         HoTen: item.attributes?.HoTen,
         Ten_nganh: item.attributes?.nganh?.data?.attributes?.Ten_nganh,
+        CCCD: item.attributes?.CCCD,
+        SDT: item.attributes?.SDT,
+        Lop: item.attributes?.Lop,
+        GioiTinh: item.attributes?.GioiTinh,
+        NienKhoa: item.attributes?.NienKhoa,
+        DiaChi: item.attributes?.DiaChi,
       }));
       setLecturers(extractedData);
     } catch (error) {
@@ -59,30 +65,43 @@ const StudentManagement = () => {
       }));
       setIndustry(extractedData);
     } catch (error) {
-      console.error("Error faculyty:", error);
+      console.error("Error industry:", error);
     }
   };
+
 
   const handlePostStudentManagement = async () => {
     let obj;
     try {
       if (!id) {
+        // if (! form.getFieldValue("MaSoSinhVien")) {
+        //   return
+        // }
+        // if (! form.getFieldValue("TenSinhVien")) {
+        //   return
+        // }
+        // if (! form.getFieldValue("Ten_nganh")) {
+        //   return
+        // }
+        // if (! form.getFieldValue("CCCD")) {
+        //   return
+        // }
+        // if (! form.getFieldValue("DiaChi")) {
+        //   return
+        // }
         obj = {
           url: "/sinh-viens",
           data: {
             data: {
               MaSoSinhVien: form.getFieldValue("MaSoSinhVien"),
-              TenSinhVien: form.getFieldValue("TenSinhVien"),
+              HoTen: form.getFieldValue("HoTen"),
               nganh: form.getFieldValue("Ten_nganh"),
-              NgaySinh: form.getFieldValue("NgaySinh"),
               CCCD: form.getFieldValue("CCCD"),
-              TkNganHang:form.getFieldValue("TkNganHang"),
-              SDT:form.getFieldValue("SDT"),
-              Lop:form.getFieldValue("Lop"),
-              NienKhoa:form.getFieldValue("NienKhoa"),
-              GioiTinh:form.getFieldValue("GioiTinh"),
-              DiaChi:form.getFieldValue("DiaChi"),
-              ChiNhanhNH:form.getFieldValue("ChiNhanhNH"),
+              SDT: form.getFieldValue("SDT"),
+              Lop: form.getFieldValue("Lop"),
+              NienKhoa: form.getFieldValue("NienKhoa"),
+              GioiTinh: form.getFieldValue("GioiTinh"),
+              DiaChi: form.getFieldValue("DiaChi"),
             },
           },
         };
@@ -93,17 +112,14 @@ const StudentManagement = () => {
           data: {
             data: {
               MaSoGiangVien: form.getFieldValue("MaSoGiangVien"),
-              TenGiangVien: form.getFieldValue("TenGiangVien"),
+              HoTen: form.getFieldValue("HoTen"),
               nganh: form.getFieldValue("Ten_nganh"),
-              NgaySinh: form.getFieldValue("NgaySinh"),
               CCCD: form.getFieldValue("CCCD"),
-              TkNganHang:form.getFieldValue("TkNganHang"),
-              SDT:form.getFieldValue("SDT"),
-              Lop:form.getFieldValue("Lop"),
-              NienKhoa:form.getFieldValue("NienKhoa"),
-              GioiTinh:form.getFieldValue("GioiTinh"),
-              DiaChi:form.getFieldValue("DiaChi"),
-              ChiNhanhNH:form.getFieldValue("ChiNhanhNH"),
+              SDT: form.getFieldValue("SDT"),
+              Lop: form.getFieldValue("Lop"),
+              NienKhoa: form.getFieldValue("NienKhoa"),
+              GioiTinh: form.getFieldValue("GioiTinh"),
+              DiaChi: form.getFieldValue("DiaChi"),
             },
           },
         };
@@ -138,25 +154,73 @@ const StudentManagement = () => {
       dataIndex: "id",
       key: "id",
       align: "center",
+      width: 60,
     },
     {
       title: "Mã số sinh viên",
       dataIndex: "MaSoSinhVien",
       key: "MaSoSinhVien",
+      width: 150,
+      align: "center",
     },
     {
       title: "Tên sinh viên",
       dataIndex: "HoTen",
       key: "HoTen",
+      width: 230,
     },
     {
       title: "Tên ngành",
       dataIndex: "Ten_nganh",
       key: "Ten_nganh",
+      width: 250,
+    },
+    {
+      title: "Căn cước công dân",
+      dataIndex: "CCCD",
+      key: "CCCD",
+      width: 220,
+      align: "center",
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "SDT",
+      key: "SDT",
+      width: 140,
+      align: "center",
+    },
+    {
+      title: "Lớp",
+      dataIndex: "Lop",
+      key: "Lop",
+      width: 140,
+      align: "center",
+    },
+    {
+      title: "Giới tính",
+      dataIndex: "GioiTinh",
+      key: "GioiTinh",
+      width: 120,
+      align: "center",
+    },
+    {
+      title: "Niên Khóa",
+      dataIndex: "NienKhoa",
+      key: "NienKhoa",
+      width: 140,
+      align: "center",
+    },
+    {
+      title: "Địa chỉ",
+      dataIndex: "DiaChi",
+      key: "DiaChi",
+      width: 250,
     },
     {
       title: "Hành động",
       key: "action",
+      align: "center",
+      width: 120,
       align: "center",
       render: (_, record) => (
         <Space size="middle">
@@ -260,24 +324,13 @@ const StudentManagement = () => {
                   }
                   options={industry.map((item) => {
                     return {
-                      label: item?.Ten_nganh,
+                      label: item?.nganh,
                       value: item.id,
                     };
                   })}
                 />
               </Form.Item>
             </div>
-            <div style={{ width: "48%" }}>
-              <Form.Item name="NgaySinh" label="Thêm ngày sinh">
-                <DatePicker
-                  format={dateFormat}
-                  placeholder="Chọn ngày sinh"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </div>
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ width: "48%" }}>
               <Form.Item
                 name="CCCD"
@@ -292,11 +345,6 @@ const StudentManagement = () => {
                 <Input />
               </Form.Item>
             </div>
-            <div style={{ width: "48%" }}>
-              <Form.Item name="TkNganHang" label="Tài khoản ngân hàng">
-                <Input />
-              </Form.Item>
-            </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ width: "48%" }}>
@@ -305,7 +353,7 @@ const StudentManagement = () => {
               </Form.Item>
             </div>
             <div style={{ width: "48%" }}>
-            <Form.Item name="Lop" label="Lớp">
+              <Form.Item name="Lop" label="Lớp">
                 <Input />
               </Form.Item>
             </div>
@@ -335,12 +383,20 @@ const StudentManagement = () => {
                       .toLowerCase()
                       .localeCompare((optionB?.label ?? "").toLowerCase())
                   }
-                  options={industry.map((item) => {
-                    return {
-                      label: item?.Ten_nganh,
-                      value: item.id,
-                    };
-                  })}
+                  options={[
+                    {
+                      label: "Nam",
+                      value: "Nam",
+                    },
+                    {
+                      label: "Nữ",
+                      value: "Nữ",
+                    },
+                    {
+                      label: "Khác",
+                      value: "Khác"
+                    }
+                  ]}
                 />
               </Form.Item>
             </div>
@@ -354,11 +410,6 @@ const StudentManagement = () => {
                   { required: true, message: " Vui lòng nhập vào Địa chỉ" },
                 ]}
               >
-                <Input />
-              </Form.Item>
-            </div>
-            <div style={{ width: "48%" }}>
-              <Form.Item name="ChiNhanhNH" label="Chi nhánh">
                 <Input />
               </Form.Item>
             </div>

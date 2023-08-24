@@ -189,7 +189,7 @@ const IndustryManagement = () => {
             <div style={{ width: "48%" }}>
               <Form.Item
                 label="Chọn khoa"
-                name="khoa"
+                name="Ten_khoa"
                 rules={[
                   { required: true, message: "Vui lòng chọn khoa tương ứng" },
                 ]}

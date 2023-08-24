@@ -106,7 +106,6 @@ const LecturersManagement = () => {
               nganh: form.getFieldValue("Ten_nganh"),
               khoa: form.getFieldValue("Ten_khoa"),
               TrinhDo: form.getFieldValue("TrinhDo"),
-              NgaySinh: form.getFieldValue("NgaySinh"),
             },
           },
         };
@@ -121,7 +120,6 @@ const LecturersManagement = () => {
               nganh: form.getFieldValue("Ten_nganh"),
               khoa: form.getFieldValue("Ten_khoa"),
               TrinhDo: form.getFieldValue("TrinhDo"),
-              NgaySinh: form.getFieldValue("NgaySinh"),
             },
           },
         };
@@ -219,6 +217,8 @@ const LecturersManagement = () => {
     setId(record.id);
     showModal();
   };
+
+  console.log(faculties);
 
   return (
     <div>
@@ -337,15 +337,6 @@ const LecturersManagement = () => {
                 ]}
               >
                 <Input />
-              </Form.Item>
-            </div>
-            <div style={{ width: "48%" }}>
-              <Form.Item name="NgaySinh" label="Thêm ngày sinh">
-                <DatePicker
-                  format={dateFormat}
-                  placeholder="Chọn ngày sinh"
-                  style={{ width: "100%" }}
-                />
               </Form.Item>
             </div>
           </div>

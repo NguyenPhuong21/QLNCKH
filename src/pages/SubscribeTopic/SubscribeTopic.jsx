@@ -11,9 +11,9 @@ const SubscribeTopic = () => {
   const [students, setStudents] = useState([{ id: 1, name: "", msv: "" }]);
   const [value, setValue] = useState("");
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+  // const showModal = () => {
+  //   setIsModalOpen(true);
+  // };
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -35,9 +35,9 @@ const SubscribeTopic = () => {
         <Form.Item label="Tên đề tài">
           <Input />
         </Form.Item>
-        <Button type="primary" style={{ marginBottom: 16 }} onClick={showModal}>
+        {/* <Button type="primary" style={{ marginBottom: 16 }} onClick={showModal}>
           Thêm thành viên
-        </Button>
+        </Button> */}
         <Form.Item label="Mã số sinh viên">
           <Input />
         </Form.Item>
