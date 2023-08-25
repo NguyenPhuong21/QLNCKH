@@ -1,71 +1,205 @@
-import React, { useId, useState } from "react";
-import { Button, Modal, Form, Input } from "antd";
-import AddStudent from "./AddStudent";
-import ReactQuill from "react-quill";
+import React, { useEffect, useState } from "react";
+import { Button, Modal, Form, Input, Table, Space,Select  } from "antd";
 import "react-quill/dist/quill.snow.css";
+import { get, Post, Put, Delete } from "../../services/Api";
 
 const SubscribeTopic = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const key = useId();
   const [form] = Form.useForm();
-  const [students, setStudents] = useState([{ id: 1, name: "", msv: "" }]);
-  const [value, setValue] = useState("");
+  const [id, setId] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [mode, setMode] = useState("create");
+  const [lecturers, setLecturers] = useState([]);
+  const [industry, setIndustry] = useState([]);
+  console.log("lecturers", lecturers);
+  useEffect(() => {
+    handleGetSubscribeTopic();
+  }, []);
 
-  // const showModal = () => {
-  //   setIsModalOpen(true);
-  // };
-  const handleOk = () => {
-    setIsModalOpen(false);
+  const handleGetSubscribeTopic = async () => {
+    try {
+      let obj = {
+        url: "/de-tais?populate=*",
+      };
+      const response = await get(obj);
+      const subscribeTopicData = response.data.map((item) => ({
+        key: item.id,
+        id: item.id,
+        TenDeTai: item.attributes?.TenDeTai,
+        Ten_nganh: item.attributes?.MaNganh?.data?.attributes?.Ten_nganh,
+        GhiChu: item.attributes?.GhiChu,
+        MaTrangThai: item.attributes?.MaTrangThai,
+        // NienKhoa: item.attributes?.NienKhoa,
+        // DiaChi: item.attributes?.DiaChi,
+      }));
+      setLecturers(subscribeTopicData);
+    } catch (error) {
+      console.error("Error faculyty:", error);
+    }
+  };
+
+  const handleGetIndustryManagement = async () => {
+    try {
+      let obj = {
+        url: "/nganhs",
+      };
+      const response = await get(obj);
+      const extractedData = response.data.map((item) => ({
+        key: item.id,
+        id: item.id,
+        nganh: item.attributes?.Ten_nganh,
+      }));
+      setIndustry(extractedData);
+    } catch (error) {
+      console.error("Error industry:", error);
+    }
+  };
+
+  const columns = [
+    {
+      title: "STT",
+      dataIndex: "id",
+      key: "id",
+      align: "center",
+      width: 60,
+    },
+    {
+      title: "Tên đề tài",
+      dataIndex: "TenDeTai",
+      key: "TenDeTai",
+      width: 300,
+    },
+
+    {
+      title: "Tên ngành",
+      dataIndex: "Ten_nganh",
+      key: "Ten_nganh",
+      width: 220,
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "MaTrangThai",
+      key: "MaTrangThai",
+      width: 220,
+      align: "center",
+    },
+    {
+      title: "Ghi chú",
+      dataIndex: "GhiChu",
+      key: "GhiChu",
+      width: 300,
+    },
+    {
+      title: "Hành động",
+      key: "action",
+      align: "center",
+      width: 120,
+      align: "center",
+      render: (_, record) => (
+        <Space size="middle">
+          <Button
+            onClick={() => {
+              setMode("edit");
+              handleEdit(record);
+            }}
+          >
+            sửa
+          </Button>
+          <Button onClick={() => handleDeleteStudentManagement(record)}>
+            Xóa
+          </Button>
+        </Space>
+      ),
+    },
+  ];
+
+  const showModal = () => {
+    setVisible(true);
+    setMode("create");
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setVisible(false);
+    form.resetFields();
   };
 
-  const deleteStudent = (id) => {
-    setStudents((stds) => {
-      const result = stds.filter((s, i) => s.id != id);
-      return result;
-    });
+  const handleEdit = (record) => {
+    form.setFieldsValue(record);
+    setId(record.id);
+    showModal();
   };
+
   return (
     <>
       <div className="heading">Đăng kí đề tài</div>
-      <Form layout="vertical">
-        <Form.Item label="Tên đề tài">
-          <Input />
-        </Form.Item>
-        {/* <Button type="primary" style={{ marginBottom: 16 }} onClick={showModal}>
-          Thêm thành viên
-        </Button> */}
-        <Form.Item label="Mã số sinh viên">
-          <Input />
-        </Form.Item>
-        <Form.Item label="Giảng viên hướng dẫn">
-          <Input />
-        </Form.Item>
-        <Form.Item label="Ghi chú">
-          <ReactQuill theme="snow" value={value} onChange={setValue} />
-        </Form.Item>
-
-        <Modal
-          title="Thành viên nhóm"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          {students &&
-            students.map((s, index) => (
-              <AddStudent
-                key={key + index}
-                id={s.id}
-                lastId={students.length}
-                setStudentList={setStudents}
-                deleteStd={deleteStudent}
-              />
-            ))}
-        </Modal>
-      </Form>
+      <div style={{ display: "flex", justifyContent: "flex-end", margin: 16 }}>
+        <Button type="primary" onClick={showModal}>
+          Thêm đề tài
+        </Button>
+      </div>
+      <Table columns={columns} dataSource={lecturers} rowKey="id" />
+      <Modal
+        visible={visible}
+        title="Thêm/sửa đề tài"
+        onCancel={handleCancel}
+        // onOk={handlePostStudentManagement}
+      >
+        <Form form={form} layout="vertical">
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ width: "48%" }}>
+            <Form.Item
+                name="Tên đề tài"
+                label="Thêm tên đề tài"
+                rules={[
+                  {
+                    required: true,
+                    message: " Vui lòng nhập vào tên đề tài",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </div>
+            <div style={{ width: "48%" }}>
+            <Form.Item
+                label="Chọn ngành"
+                name="Ten_nganh"
+                rules={[
+                  { required: true, message: "Vui lòng chọn ngành tương ứng" },
+                ]}
+              >
+                <Select
+                  showSearch
+                  style={{ width: "100%", marginBottom: 16 }}
+                  placeholder="Chọn ngành tương ứng"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  filterSort={(optionA, optionB) =>
+                    (optionA?.label ?? "")
+                      .toLowerCase()
+                      .localeCompare((optionB?.label ?? "").toLowerCase())
+                  }
+                  options={industry.map((item) => {
+                    return {
+                      label: item?.nganh,
+                      value: item.id,
+                    };
+                  })}
+                />
+              </Form.Item>
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ width: "48%" }}></div>
+            <div style={{ width: "48%" }}></div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ width: "48%" }}></div>
+            <div style={{ width: "48%" }}></div>
+          </div>
+        </Form>
+      </Modal>
     </>
   );
 };

@@ -54,8 +54,8 @@ const NavBar = () => {
 
   return (
     <div className="App">
-      <Divider type="horizontal" style={{ color: "red" }} />
       <p>MAIN</p>
+      <Divider type="horizontal" style={{ color: "red", marginTop: "30px"  }} />
       <Menu mode="inline" style={{ width: "100%" }}>
         <Menu.Item key="dashboard" icon={<DashboardOutlined />}>
           <Link to="/Dashboard">Trang chủ</Link>
@@ -157,6 +157,12 @@ const NAVBAR = {
           url: "/Extend",
           icon: <RightOutlined />,
           label: "Gia hạn",
+        },
+        {
+          key: "subscribeTopic",
+          url: "/SubscribeTopic",
+          icon: <RightOutlined />,
+          label: "Đăng kí đề tài",
         },
       ],
     },

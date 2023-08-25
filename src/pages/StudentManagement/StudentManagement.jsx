@@ -37,7 +37,6 @@ const StudentManagement = () => {
         id: item.id,
         MaSoSinhVien: item.attributes?.MaSoSinhVien,
         HoTen: item.attributes?.HoTen,
-        HoTen: item.attributes?.HoTen,
         Ten_nganh: item.attributes?.nganh?.data?.attributes?.Ten_nganh,
         CCCD: item.attributes?.CCCD,
         SDT: item.attributes?.SDT,
