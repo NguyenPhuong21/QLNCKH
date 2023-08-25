@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Table, Space,Select  } from "antd";
+import { Button, Modal, Form, Input, Table, Space,Select ,DatePicker } from "antd";
 import "react-quill/dist/quill.snow.css";
 import { get, Post, Put, Delete } from "../../services/Api";
+const { RangePicker } = DatePicker;
 
 const SubscribeTopic = () => {
   const [form] = Form.useForm();
@@ -10,7 +11,8 @@ const SubscribeTopic = () => {
   const [mode, setMode] = useState("create");
   const [lecturers, setLecturers] = useState([]);
   const [industry, setIndustry] = useState([]);
-  console.log("lecturers", lecturers);
+
+  const { TextArea } = Input;
   useEffect(() => {
     handleGetSubscribeTopic();
   }, []);
@@ -147,8 +149,8 @@ const SubscribeTopic = () => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ width: "48%" }}>
             <Form.Item
-                name="Tên đề tài"
-                label="Thêm tên đề tài"
+                name="TenDeTai"
+                label="Tên đề tài"
                 rules={[
                   {
                     required: true,
@@ -191,13 +193,130 @@ const SubscribeTopic = () => {
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div style={{ width: "48%" }}></div>
-            <div style={{ width: "48%" }}></div>
+          <div style={{ width: "48%" }}>
+            <Form.Item
+                name="GhiChu"
+                label="Thêm ghi chú"
+                rules={[
+                  {
+                    required: true,
+                    message: " Vui lòng nhập vào ghi chú",
+                  },
+                ]}
+              >
+                  <TextArea />
+              </Form.Item>
+            </div>
+            <div style={{ width: "48%" }}>
+            <Form.Item
+                name="NgayThucHien"
+                label="Ngày thực hiện"
+                rules={[
+                  {
+                    required: true,
+                    message: " Vui lòng nhập vào ghi chú",
+                  },
+                ]}
+              >
+                 <DatePicker renderExtraFooter={() => 'extra footer'} placeholder="Chọn ngày thực hiện" style={{width:'100%'}} />
+              </Form.Item>
+            </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div style={{ width: "48%" }}></div>
-            <div style={{ width: "48%" }}></div>
+            <div style={{ width: "48%" }}>
+            <Form.Item
+                name="NgayKetThuc"
+                label="Ngày kết thúc"
+                rules={[
+                  {
+                    required: true,
+                    message: " Vui lòng nhập vào ghi chú",
+                  },
+                ]}
+              >
+                 <DatePicker renderExtraFooter={() => 'extra footer'} placeholder="Chọn ngày kết thúc" style={{width:'100%'}} />
+              </Form.Item>
+            </div>
+            <div style={{ width: "48%" }}>
+            <Form.Item
+                label="Chọn trạng thái"
+                name="MaTrangThai"
+                rules={[
+                  { required: true, message: "Vui lòng chọn trạng thái tương ứng" },
+                ]}
+              >
+                <Select
+                  showSearch
+                  style={{ width: "100%", marginBottom: 16 }}
+                  placeholder="Chọn trạng thái tương ứng"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  filterSort={(optionA, optionB) =>
+                    (optionA?.label ?? "")
+                      .toLowerCase()
+                      .localeCompare((optionB?.label ?? "").toLowerCase())
+                  }
+                  options={industry.map((item) => {
+                    return {
+                      label: item?.nganh,
+                      value: item.id,
+                    };
+                  })}
+                />
+              </Form.Item>
+            </div>
           </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ width: "48%" }}>
+            <Form.Item
+                label="Chọn giảng viên"
+                name="MaGiangVien"
+                rules={[
+                  { required: true, message: "Vui lòng chọn giảng viên tương ứng" },
+                ]}
+              >
+                <Select
+                  showSearch
+                  style={{ width: "100%", marginBottom: 16 }}
+                  placeholder="Chọn giảng viên tương ứng"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  filterSort={(optionA, optionB) =>
+                    (optionA?.label ?? "")
+                      .toLowerCase()
+                      .localeCompare((optionB?.label ?? "").toLowerCase())
+                  }
+                  options={industry.map((item) => {
+                    return {
+                      label: item?.nganh,
+                      value: item.id,
+                    };
+                  })}
+                />
+              </Form.Item>
+            </div>
+            <div style={{ width: "48%" }}>
+            <Form.Item
+                name="KetQua"
+                label="kết quả"
+                rules={[
+                  {
+                    required: true,
+                    message: " Vui lòng nhập vào kết quả",
+                  },
+                ]}
+              >
+                  <Input />
+              </Form.Item>
+            </div>
+          </div>
+          <div>
+              link đề tài
+            </div>
         </Form>
       </Modal>
     </>
