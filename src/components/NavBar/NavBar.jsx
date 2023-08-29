@@ -69,7 +69,7 @@ const NavBar = () => {
             );
           } else {
             return (
-              <SubMenu key="topic" title="Đề Tài" icon={<BarChartOutlined />}>
+              <SubMenu key={item?.key} title={item?.label} icon={<BarChartOutlined />}>
                 {item?.childs?.map((it, i) => {
                   return (
                     <Menu.Item key={it.key} icon={it?.icon}>
@@ -180,7 +180,7 @@ const NAVBAR = {
     },
     {
       label: "Danh mục",
-      key: "/category",
+      key: "category",
       icon: <ContactsOutlined />,
       childs: [
         {

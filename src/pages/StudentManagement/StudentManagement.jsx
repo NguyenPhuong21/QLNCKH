@@ -11,6 +11,7 @@ import {
   DatePicker,
 } from "antd";
 import { get, Post, Put, Delete } from "../../services/Api";
+import dayjs from "dayjs";
 
 const StudentManagement = () => {
   const [lecturers, setLecturers] = useState([]);
@@ -18,14 +19,20 @@ const StudentManagement = () => {
   const [mode, setMode] = useState("create");
   const [industry, setIndustry] = useState([]);
   const [id, setId] = useState(null);
+  const [api, contextHolder] = notification.useNotification();
 
   const [form] = Form.useForm();
   const dateFormat = "YYYY/MM/DD";
+  const { TextArea } = Input;
   useEffect(() => {
     handleGetStudentManagement();
     handleGetIndustryManagement();
   }, []);
-
+  useEffect(() => {
+    if (!visible) {
+      setId(null);
+    }
+  }, [visible]);
   const handleGetStudentManagement = async () => {
     try {
       let obj = {
@@ -44,6 +51,7 @@ const StudentManagement = () => {
         GioiTinh: item.attributes?.GioiTinh,
         NienKhoa: item.attributes?.NienKhoa,
         DiaChi: item.attributes?.DiaChi,
+        NgaySinh: item.attributes?.NgaySinh,
       }));
       setLecturers(extractedData);
     } catch (error) {
@@ -68,26 +76,10 @@ const StudentManagement = () => {
     }
   };
 
-
   const handlePostStudentManagement = async () => {
     let obj;
     try {
       if (!id) {
-        // if (! form.getFieldValue("MaSoSinhVien")) {
-        //   return
-        // }
-        // if (! form.getFieldValue("TenSinhVien")) {
-        //   return
-        // }
-        // if (! form.getFieldValue("Ten_nganh")) {
-        //   return
-        // }
-        // if (! form.getFieldValue("CCCD")) {
-        //   return
-        // }
-        // if (! form.getFieldValue("DiaChi")) {
-        //   return
-        // }
         obj = {
           url: "/sinh-viens",
           data: {
@@ -101,10 +93,15 @@ const StudentManagement = () => {
               NienKhoa: form.getFieldValue("NienKhoa"),
               GioiTinh: form.getFieldValue("GioiTinh"),
               DiaChi: form.getFieldValue("DiaChi"),
+              NgaySinh: form.getFieldValue("NgaySinh"),
             },
           },
         };
         await Post(obj);
+        notification.success({
+          message: "Thêm sinh viên thành công",
+          duration: 3,
+        });
       } else {
         obj = {
           url: `/sinh-viens/${id}`,
@@ -119,10 +116,15 @@ const StudentManagement = () => {
               NienKhoa: form.getFieldValue("NienKhoa"),
               GioiTinh: form.getFieldValue("GioiTinh"),
               DiaChi: form.getFieldValue("DiaChi"),
+              NgaySinh: form.getFieldValue("NgaySinh"),
             },
           },
         };
         await Put(obj);
+        notification.success({
+          message: "Sửa sinh viên thành công",
+          duration: 3,
+        });
       }
       form.resetFields();
       handleGetStudentManagement();
@@ -138,12 +140,10 @@ const StudentManagement = () => {
       url: `/sinh-viens/${record.id}`,
     };
     const res = await Delete(obj);
-    if (res.status == "SUCCESS") {
       notification.success({
         message: "Đã xóa thành công",
         duration: 3,
       });
-    }
     handleGetStudentManagement();
   };
 
@@ -154,6 +154,7 @@ const StudentManagement = () => {
       key: "id",
       align: "center",
       width: 60,
+      fixed: 'left',
     },
     {
       title: "Mã số sinh viên",
@@ -161,18 +162,30 @@ const StudentManagement = () => {
       key: "MaSoSinhVien",
       width: 150,
       align: "center",
+      fixed: 'left',
     },
     {
       title: "Tên sinh viên",
       dataIndex: "HoTen",
       key: "HoTen",
-      width: 230,
+      width: 180,
+      fixed: 'left',
+    },
+    {
+      title: "Ngày sinh",
+      dataIndex: "NgaySinh",
+      key: "NgaySinh",
+      width: 120,
+      align: "center",
+      render: (text) => (
+        <div>{dayjs(text, "YYYY-MM-DD").format("DD-MM-YYYY")}</div>
+      ),
     },
     {
       title: "Tên ngành",
       dataIndex: "Ten_nganh",
       key: "Ten_nganh",
-      width: 250,
+      width: 220,
     },
     {
       title: "Căn cước công dân",
@@ -219,8 +232,9 @@ const StudentManagement = () => {
       title: "Hành động",
       key: "action",
       align: "center",
-      width: 120,
+      width: 150,
       align: "center",
+      fixed: 'right',
       render: (_, record) => (
         <Space size="middle">
           <Button
@@ -250,20 +264,36 @@ const StudentManagement = () => {
   };
 
   const handleEdit = (record) => {
-    form.setFieldsValue(record);
+    console.log(record);
+    const nganhId = industry.find(
+      (item) => item.nganh === record?.Ten_nganh
+    )?.id;
+    const editData = {
+      ...record,
+      NgaySinh: dayjs(record?.NgaySinh, "YYYY-MM-DD"),
+      Ten_nganh: nganhId,
+    };
+    form.setFieldsValue(editData);
     setId(record.id);
     showModal();
   };
 
   return (
     <div>
+      {contextHolder}
       <div className="heading">Quản lý sinh viên</div>
       <div style={{ display: "flex", justifyContent: "flex-end", margin: 16 }}>
         <Button type="primary" onClick={showModal}>
           Thêm sinh viên
         </Button>
       </div>
-      <Table columns={columns} dataSource={lecturers} rowKey="id" />
+      <Table
+        columns={columns}
+        style={{ width: "100%" }}
+        dataSource={lecturers}
+        rowKey="id"
+        scroll={{ y: 620 }}
+      />
 
       <Modal
         visible={visible}
@@ -280,7 +310,7 @@ const StudentManagement = () => {
                 rules={[
                   {
                     required: true,
-                    message: " Vui lòng nhập vào mã giảng viên",
+                    message: " Vui lòng nhập vào mã sinh viên",
                   },
                 ]}
               >
@@ -292,10 +322,45 @@ const StudentManagement = () => {
                 name="HoTen"
                 label="Thêm tên sinh viên"
                 rules={[
-                  { required: true, message: " Vui lòng nhập vào giảng viên" },
+                  {
+                    required: true,
+                    message: " Vui lòng nhập vào tên sinh viên",
+                  },
                 ]}
               >
                 <Input />
+              </Form.Item>
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ width: "48%" }}>
+              <Form.Item
+                name="NgaySinh"
+                label="Ngày sinh"
+                rules={[
+                  {
+                    required: true,
+                    message: " Vui lòng nhập vào ngày sinh",
+                  },
+                ]}
+              >
+                <DatePicker
+                  format={"DD-MM-YYYY"}
+                  renderExtraFooter={() => "extra footer"}
+                  placeholder="Chọn ngày sinh"
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            </div>
+            <div style={{ width: "48%" }}>
+              <Form.Item
+                name="DiaChi"
+                label="Địa chỉ"
+                rules={[
+                  { required: true, message: " Vui lòng nhập vào Địa chỉ" },
+                ]}
+              >
+                <TextArea />
               </Form.Item>
             </div>
           </div>
@@ -393,23 +458,10 @@ const StudentManagement = () => {
                     },
                     {
                       label: "Khác",
-                      value: "Khác"
-                    }
+                      value: "Khác",
+                    },
                   ]}
                 />
-              </Form.Item>
-            </div>
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div style={{ width: "48%" }}>
-              <Form.Item
-                name="DiaChi"
-                label="Địa chỉ"
-                rules={[
-                  { required: true, message: " Vui lòng nhập vào Địa chỉ" },
-                ]}
-              >
-                <Input />
               </Form.Item>
             </div>
           </div>

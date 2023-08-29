@@ -19,11 +19,26 @@ const PrivateRouter = ({ children }) => {
   return (
     <React.Fragment>
       <Header />
-      <div style={{ display: "flex", height: "100vh"}}>
-        <div style={{ width: "240px" }}>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          // overflow: "hidden",
+          height: "100vh",
+        }}
+      >
+        <div style={{ width: "240px", flexShrink: 0 }}>
           <NavBar />
         </div>
-        <div style={{ flex:1, background:'#fff', padding:5}}>{children}</div>
+        <div
+          style={{
+            width: "calc(100% - 240px)",
+            background: "#fff",
+            padding: 5,
+          }}
+        >
+          {children}
+        </div>
       </div>
     </React.Fragment>
   );

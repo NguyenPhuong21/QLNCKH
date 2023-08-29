@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Table, Space,Select ,DatePicker } from "antd";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  Table,
+  Space,
+  Select,
+  DatePicker,
+} from "antd";
 import "react-quill/dist/quill.snow.css";
 import { get, Post, Put, Delete } from "../../services/Api";
-const { RangePicker } = DatePicker;
+import dayjs from "dayjs";
 
 const SubscribeTopic = () => {
   const [form] = Form.useForm();
   const [id, setId] = useState(null);
   const [visible, setVisible] = useState(false);
-  const [mode, setMode] = useState("create");
+  const [mode, setMode] = useState("");
   const [lecturers, setLecturers] = useState([]);
   const [industry, setIndustry] = useState([]);
 
@@ -29,9 +38,10 @@ const SubscribeTopic = () => {
         TenDeTai: item.attributes?.TenDeTai,
         Ten_nganh: item.attributes?.MaNganh?.data?.attributes?.Ten_nganh,
         GhiChu: item.attributes?.GhiChu,
-        MaTrangThai: item.attributes?.MaTrangThai,
-        // NienKhoa: item.attributes?.NienKhoa,
-        // DiaChi: item.attributes?.DiaChi,
+        MaTrangThai:
+          item.attributes?.MaTrangThai?.data?.attributes?.TenTrangThai,
+        NgayThucHien: item.attributes?.NgayThucHien,
+        NgayKetThuc: item.attributes?.NgayKetThuc,
       }));
       setLecturers(subscribeTopicData);
     } catch (error) {
@@ -70,7 +80,6 @@ const SubscribeTopic = () => {
       key: "TenDeTai",
       width: 300,
     },
-
     {
       title: "Tên ngành",
       dataIndex: "Ten_nganh",
@@ -78,11 +87,54 @@ const SubscribeTopic = () => {
       width: 220,
     },
     {
+      title: "Ngày thực hiện",
+      dataIndex: "NgayThucHien",
+      key: "NgayThucHien",
+      width: 220,
+      render: (text) => (
+        <div>{dayjs(text, "YYYY-MM-DD").format("DD-MM-YYYY")}</div>
+      ),
+    },
+    {
+      title: "Ngày kết thúc",
+      dataIndex: "NgayKetThuc",
+      key: "NgayKetThuc",
+      width: 220,
+      render: (text) => (
+        <div>{dayjs(text, "YYYY-MM-DD").format("DD-MM-YYYY")}</div>
+      ),
+    },
+    {
       title: "Trạng thái",
       dataIndex: "MaTrangThai",
       key: "MaTrangThai",
       width: 220,
       align: "center",
+      render: (text, record) => (
+        <div className="status-custom">
+          <span
+            style={
+              text === "Đăng kí"
+                ? { background: "rgb(255, 0, 0, .50)" }
+                : text === "Đề xuất"
+                ? { background: "rgb(0, 128, 0, .5)" }
+                : text === "Nghiệm thu cấp bộ môn"
+                ? { background: "rgb(0, 128, 0, .5)" }
+                : text === "Nghiệm thu cấp khoa"
+                ? { background: "rgb(0, 128, 0, .5)" }
+                : text === "Nghiệm thu cấp khoa"
+                ? { background: "rgb(0, 128, 0, .5)" }
+                : text === "báo cáo cấp trường"
+                ? { background: "rgb(0, 128, 0, .5)" }
+                : text === "Kết thúc"
+                ? { background: "rgb(0, 128, 0, .5)" }
+                : {}
+            }
+          >
+            {text}
+          </span>
+        </div>
+      ),
     },
     {
       title: "Ghi chú",
@@ -113,7 +165,6 @@ const SubscribeTopic = () => {
       ),
     },
   ];
-
   const showModal = () => {
     setVisible(true);
     setMode("create");
@@ -125,7 +176,12 @@ const SubscribeTopic = () => {
   };
 
   const handleEdit = (record) => {
-    form.setFieldsValue(record);
+    const editData = {
+      ...record,
+      NgayThucHien: dayjs(record?.NgayThucHien, "YYYY-MM-DD"),
+      NgayKetThuc: dayjs(record?.NgayKetThuc, "YYYY-MM-DD"),
+    };
+    form.setFieldsValue(editData);
     setId(record.id);
     showModal();
   };
@@ -148,7 +204,7 @@ const SubscribeTopic = () => {
         <Form form={form} layout="vertical">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ width: "48%" }}>
-            <Form.Item
+              <Form.Item
                 name="TenDeTai"
                 label="Tên đề tài"
                 rules={[
@@ -158,11 +214,11 @@ const SubscribeTopic = () => {
                   },
                 ]}
               >
-                <Input />
+                <Input placeholder="Nhập vào tên đề tài" />
               </Form.Item>
             </div>
             <div style={{ width: "48%" }}>
-            <Form.Item
+              <Form.Item
                 label="Chọn ngành"
                 name="Ten_nganh"
                 rules={[
@@ -193,8 +249,8 @@ const SubscribeTopic = () => {
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ width: "48%" }}>
-            <Form.Item
+            <div style={{ width: "48%" }}>
+              <Form.Item
                 name="GhiChu"
                 label="Thêm ghi chú"
                 rules={[
@@ -204,11 +260,11 @@ const SubscribeTopic = () => {
                   },
                 ]}
               >
-                  <TextArea />
+                <TextArea placeholder="Nhập vào ghi chú" />
               </Form.Item>
             </div>
             <div style={{ width: "48%" }}>
-            <Form.Item
+              <Form.Item
                 name="NgayThucHien"
                 label="Ngày thực hiện"
                 rules={[
@@ -218,13 +274,19 @@ const SubscribeTopic = () => {
                   },
                 ]}
               >
-                 <DatePicker renderExtraFooter={() => 'extra footer'} placeholder="Chọn ngày thực hiện" style={{width:'100%'}} />
+                <DatePicker
+                  format={"DD-MM-YYYY"}
+                  renderExtraFooter={() => "extra footer"}
+                  placeholder="Chọn ngày thực hiện"
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ width: "48%" }}>
-            <Form.Item
+              <Form.Item
+                format={"DD-MM-YYYY"}
                 name="NgayKetThuc"
                 label="Ngày kết thúc"
                 rules={[
@@ -234,15 +296,22 @@ const SubscribeTopic = () => {
                   },
                 ]}
               >
-                 <DatePicker renderExtraFooter={() => 'extra footer'} placeholder="Chọn ngày kết thúc" style={{width:'100%'}} />
+                <DatePicker
+                  renderExtraFooter={() => "extra footer"}
+                  placeholder="Chọn ngày kết thúc"
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </div>
             <div style={{ width: "48%" }}>
-            <Form.Item
+              <Form.Item
                 label="Chọn trạng thái"
                 name="MaTrangThai"
                 rules={[
-                  { required: true, message: "Vui lòng chọn trạng thái tương ứng" },
+                  {
+                    required: true,
+                    message: "Vui lòng chọn trạng thái tương ứng",
+                  },
                 ]}
               >
                 <Select
@@ -270,11 +339,14 @@ const SubscribeTopic = () => {
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ width: "48%" }}>
-            <Form.Item
+              <Form.Item
                 label="Chọn giảng viên"
                 name="MaGiangVien"
                 rules={[
-                  { required: true, message: "Vui lòng chọn giảng viên tương ứng" },
+                  {
+                    required: true,
+                    message: "Vui lòng chọn giảng viên tương ứng",
+                  },
                 ]}
               >
                 <Select
@@ -300,7 +372,7 @@ const SubscribeTopic = () => {
               </Form.Item>
             </div>
             <div style={{ width: "48%" }}>
-            <Form.Item
+              <Form.Item
                 name="KetQua"
                 label="kết quả"
                 rules={[
@@ -310,13 +382,11 @@ const SubscribeTopic = () => {
                   },
                 ]}
               >
-                  <Input />
+                <Input placeholder="Nhập vào kết quả" />
               </Form.Item>
             </div>
           </div>
-          <div>
-              link đề tài
-            </div>
+          <div>link đề tài</div>
         </Form>
       </Modal>
     </>

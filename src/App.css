@@ -16,3 +16,16 @@ a {
   padding: 20px 0;
   background: #fff;
 }
+
+.status-custom {
+  display: flex;
+  justify-content: center;
+}
+
+.status-custom span {
+  display: block;
+  border-radius: 50px;
+  padding: 2px 16px;
+  color: white;
+  min-width: 65%;
+}
