@@ -10,7 +10,6 @@ import {
   DatePicker,
   Popconfirm,
   Image,
-  Typography,
 } from "antd";
 import "react-quill/dist/quill.snow.css";
 import { get, Post, Put, Delete } from "../../services/Api";
@@ -133,6 +132,10 @@ const AssignTopics = () => {
           },
         };
         await Post(obj);
+        notification.success({
+          message: "Thêm đề tài thành công",
+          duration: 3,
+        });
       } else {
         obj = {
           url: `/de-tais/${id}`,
@@ -149,6 +152,10 @@ const AssignTopics = () => {
           },
         };
         await Put(obj);
+        notification.success({
+          message: "Sửa đề tài thành công",
+          duration: 3,
+        });
       }
       form.resetFields();
       handleGetAssignTopics();
@@ -159,6 +166,18 @@ const AssignTopics = () => {
     }
   };
 
+  const handleDeleteAssignTopicsManagement = async (record) => {
+    let obj = {
+      url: `/de-tais/${record.id}`,
+    };
+    await Delete(obj);
+      notification.success({
+        message: "Đã xóa thành công đề tài",
+        duration: 3,
+      });
+      handleGetAssignTopics();
+  };
+
   const columns = [
     {
       title: "STT",
@@ -166,12 +185,14 @@ const AssignTopics = () => {
       key: "id",
       align: "center",
       width: 60,
+      fixed: 'left',
     },
     {
       title: "Tên đề tài",
       dataIndex: "TenDeTai",
       key: "TenDeTai",
       width: 300,
+      fixed: 'left',
     },
     {
       title: "Tên giảng viên",
@@ -249,6 +270,7 @@ const AssignTopics = () => {
       align: "center",
       width: 120,
       align: "center",
+      fixed: 'right',
       render: (_, record) => (
         <Space size="middle">
           <Button
@@ -263,7 +285,7 @@ const AssignTopics = () => {
             title="Xác nhận xóa đăng kí đề tài:"
             description={record.TenDeTai}
             icon={<QuestionCircleOutlined />}
-            onConfirm={() => handleDeleteStudentManagement(record)}
+            onConfirm={() => handleDeleteAssignTopicsManagement(record)}
           >
             <CustomButton
               type="text"
@@ -310,7 +332,7 @@ const AssignTopics = () => {
           Thêm đề tài
         </Button>
       </div>
-      <Table columns={columns} dataSource={lecturers} rowKey="id" />
+      <Table columns={columns} dataSource={lecturers} rowKey="id"  scroll={{ y: 620 }}/>
       <Modal
         visible={visible}
         title="Thêm/sửa đề tài"

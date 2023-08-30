@@ -9,12 +9,17 @@ import {
   notification,
   Select,
   DatePicker,
+  Popconfirm,
+  Image,
 } from "antd";
 import { get, Post, Put, Delete } from "../../services/Api";
 
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 import dayjs from "dayjs";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import CustomButton from "../../components/CustomButton";
+import { deleteIcon, editIcon } from "../../assets";
 
 dayjs.extend(customParseFormat);
 // import weekday from "dayjs/plugin/weekday";
@@ -103,8 +108,8 @@ const LecturersManagement = () => {
             data: {
               MaSoGiangVien: form.getFieldValue("MaSoGiangVien"),
               TenGiangVien: form.getFieldValue("TenGiangVien"),
-              nganh: form.getFieldValue("Ten_nganh"),
-              khoa: form.getFieldValue("Ten_khoa"),
+              nganh: form.getFieldValue("nganh"),
+              khoa: form.getFieldValue("khoa"),
               TrinhDo: form.getFieldValue("TrinhDo"),
             },
           },
@@ -117,8 +122,8 @@ const LecturersManagement = () => {
             data: {
               MaSoGiangVien: form.getFieldValue("MaSoGiangVien"),
               TenGiangVien: form.getFieldValue("TenGiangVien"),
-              nganh: form.getFieldValue("Ten_nganh"),
-              khoa: form.getFieldValue("Ten_khoa"),
+              nganh: form.getFieldValue("nganh"),
+              khoa: form.getFieldValue("khoa"),
               TrinhDo: form.getFieldValue("TrinhDo"),
             },
           },
@@ -128,7 +133,6 @@ const LecturersManagement = () => {
       form.resetFields();
       handleGetLecturersManagement();
       setVisible(false);
-      return response;
     } catch (error) {
       console.error("Error faculyty:", error);
     }
@@ -187,16 +191,24 @@ const LecturersManagement = () => {
       render: (_, record) => (
         <Space size="middle">
           <Button
+            type="text"
             onClick={() => {
               setMode("edit");
               handleEdit(record);
             }}
+            icon={<Image width={24} src={editIcon} preview={false} />}
+          ></Button>
+          <Popconfirm
+            title="Xác nhận xóa giảng viên:"
+            description={record.TenGiangVien}
+            icon={<QuestionCircleOutlined />}
+            onConfirm={() => handleDeleteLecturersManagement(record)}
           >
-            sửa
-          </Button>
-          <Button onClick={() => handleDeleteLecturersManagement(record)}>
-            Xóa
-          </Button>
+            <CustomButton
+              type="text"
+              icon={<Image width={22} src={deleteIcon} preview={false} />}
+            />
+          </Popconfirm>
         </Space>
       ),
     },
@@ -213,12 +225,15 @@ const LecturersManagement = () => {
   };
 
   const handleEdit = (record) => {
-    form.setFieldsValue(record);
+    const editData = {
+      ...record,
+      nganh: industry.find((item) => item.Ten_nganh === record.Ten_nganh)?.id,
+      khoa: faculties.find((item) => item.Ten_khoa === record.Ten_khoa)?.id,
+    };
+    form.setFieldsValue(editData);
     setId(record.id);
     showModal();
   };
-
-  console.log(faculties);
 
   return (
     <div>
@@ -268,7 +283,7 @@ const LecturersManagement = () => {
             <div style={{ width: "48%" }}>
               <Form.Item
                 label="Chọn khoa"
-                name="Ten_khoa"
+                name="khoa"
                 rules={[
                   { required: true, message: "Vui lòng chọn khoa tương ứng" },
                 ]}
@@ -286,7 +301,6 @@ const LecturersManagement = () => {
                       .toLowerCase()
                       .localeCompare((optionB?.label ?? "").toLowerCase())
                   }
-                  // value={}
                   options={faculties.map((item) => {
                     return {
                       label: item?.Ten_khoa,
@@ -299,7 +313,7 @@ const LecturersManagement = () => {
             <div style={{ width: "48%" }}>
               <Form.Item
                 label="Chọn ngành"
-                name="Ten_nganh"
+                name="nganh"
                 rules={[
                   { required: true, message: "Vui lòng chọn ngành tương ứng" },
                 ]}

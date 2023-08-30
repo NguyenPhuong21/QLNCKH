@@ -8,8 +8,13 @@ import {
   Space,
   notification,
   Select,
+  Popconfirm,
+  Image,
 } from "antd";
 import { get, Post, Put, Delete } from "../../services/Api";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import CustomButton from "../../components/CustomButton";
+import { deleteIcon, editIcon } from "../../assets";
 
 // import 'antd/dist/antd.css';
 
@@ -62,6 +67,7 @@ const IndustryManagement = () => {
   };
 
   const handlePostIndustryManagement = async () => {
+    console.log('form.getFieldValue("khoa")', form.getFieldValue("khoa"));
     let obj;
     try {
       if (!id) {
@@ -90,7 +96,7 @@ const IndustryManagement = () => {
       form.resetFields();
       handleGetIndustryManagement();
       setVisible(false);
-      return response;
+      // return response;
     } catch (error) {
       console.error("Error faculyty:", error);
     }
@@ -110,14 +116,12 @@ const IndustryManagement = () => {
     handleGetIndustryManagement();
   };
 
-
-
   const columns = [
     {
       title: "STT",
       dataIndex: "id",
       key: "id",
-      align:'center'
+      align: "center",
     },
     {
       title: "Tên Khoa",
@@ -136,16 +140,25 @@ const IndustryManagement = () => {
       render: (_, record) => (
         <Space size="middle">
           <Button
+            type="text"
             onClick={() => {
               setMode("edit");
               handleEdit(record);
             }}
+            icon={<Image width={24} src={editIcon} preview={false} />}
           >
-            sửa
           </Button>
-          <Button onClick={() => handleDeleteIndustryManagement(record)}>
-            Xóa
-          </Button>
+          <Popconfirm
+            title="Xác nhận xóa ngành:"
+            description={record.Ten_nganh}
+            icon={<QuestionCircleOutlined />}
+            onConfirm={() => handleDeleteIndustryManagement(record)}
+          >
+            <CustomButton
+              type="text"
+              icon={<Image width={22} src={deleteIcon} preview={false} />}
+            />
+          </Popconfirm>
         </Space>
       ),
     },
@@ -162,8 +175,11 @@ const IndustryManagement = () => {
   };
 
   const handleEdit = (record) => {
-    console.log('record', record)
-    form.setFieldsValue(record);
+    const editData = {
+      ...record,
+      khoa: faculties.find((item) => item.Ten_khoa === record.Ten_khoa)?.id,
+    };
+    form.setFieldsValue(editData);
     setId(record.id);
     showModal();
   };
@@ -189,7 +205,7 @@ const IndustryManagement = () => {
             <div style={{ width: "48%" }}>
               <Form.Item
                 label="Chọn khoa"
-                name="Ten_khoa"
+                name="khoa"
                 rules={[
                   { required: true, message: "Vui lòng chọn khoa tương ứng" },
                 ]}

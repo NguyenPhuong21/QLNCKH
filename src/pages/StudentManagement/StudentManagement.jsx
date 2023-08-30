@@ -9,9 +9,14 @@ import {
   notification,
   Select,
   DatePicker,
+  Popconfirm,
+  Image,
 } from "antd";
 import { get, Post, Put, Delete } from "../../services/Api";
 import dayjs from "dayjs";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import CustomButton from "../../components/CustomButton";
+import { deleteIcon, editIcon } from "../../assets";
 
 const StudentManagement = () => {
   const [lecturers, setLecturers] = useState([]);
@@ -139,11 +144,11 @@ const StudentManagement = () => {
     let obj = {
       url: `/sinh-viens/${record.id}`,
     };
-    const res = await Delete(obj);
-      notification.success({
-        message: "Đã xóa thành công",
-        duration: 3,
-      });
+    await Delete(obj);
+    notification.success({
+      message: "Đã xóa thành công",
+      duration: 3,
+    });
     handleGetStudentManagement();
   };
 
@@ -154,7 +159,7 @@ const StudentManagement = () => {
       key: "id",
       align: "center",
       width: 60,
-      fixed: 'left',
+      fixed: "left",
     },
     {
       title: "Mã số sinh viên",
@@ -162,14 +167,14 @@ const StudentManagement = () => {
       key: "MaSoSinhVien",
       width: 150,
       align: "center",
-      fixed: 'left',
+      fixed: "left",
     },
     {
       title: "Tên sinh viên",
       dataIndex: "HoTen",
       key: "HoTen",
       width: 180,
-      fixed: 'left',
+      fixed: "left",
     },
     {
       title: "Ngày sinh",
@@ -234,20 +239,28 @@ const StudentManagement = () => {
       align: "center",
       width: 150,
       align: "center",
-      fixed: 'right',
+      fixed: "right",
       render: (_, record) => (
         <Space size="middle">
           <Button
+            type="text"
             onClick={() => {
               setMode("edit");
               handleEdit(record);
             }}
+            icon={<Image width={24} src={editIcon} preview={false} />}
+          ></Button>
+          <Popconfirm
+            title="Xác nhận xóa sinh viên:"
+            description={record.HoTen}
+            icon={<QuestionCircleOutlined />}
+            onConfirm={() => handleDeleteStudentManagement(record)}
           >
-            sửa
-          </Button>
-          <Button onClick={() => handleDeleteStudentManagement(record)}>
-            Xóa
-          </Button>
+            <CustomButton
+              type="text"
+              icon={<Image width={22} src={deleteIcon} preview={false} />}
+            />
+          </Popconfirm>
         </Space>
       ),
     },

@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Modal, Form, Input, Space, notification } from "antd";
-import { get, Post, Put, Delete} from "../../services/Api";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Space,
+  notification,
+  Popconfirm,
+  Image,
+} from "antd";
+import { get, Post, Put, Delete } from "../../services/Api";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { deleteIcon, editIcon } from "../../assets";
+import CustomButton from "../../components/CustomButton";
 
 // import 'antd/dist/antd.css';
 
@@ -103,14 +116,24 @@ const FacultyManagement = () => {
       render: (_, record) => (
         <Space size="middle">
           <Button
+            type="text"
             onClick={() => {
               setMode("edit");
               handleEdit(record);
             }}
+            icon={<Image width={24} src={editIcon} preview={false} />}
+          ></Button>
+          <Popconfirm
+            title="Xác nhận xóa đăng kí đề tài:"
+            description={record.TenDeTai}
+            icon={<QuestionCircleOutlined />}
+            onConfirm={() => handleDeleteFacutyManagement(record)}
           >
-            sửa
-          </Button>
-          <Button onClick={() => handleDeleteFacutyManagement(record)}>Xóa</Button>
+            <CustomButton
+              type="text"
+              icon={<Image width={22} src={deleteIcon} preview={false} />}
+            />
+          </Popconfirm>
         </Space>
       ),
     },
@@ -132,14 +155,10 @@ const FacultyManagement = () => {
     showModal();
   };
 
-  // const handleDelete = (id) => {
-  //   setFaculties(faculties.filter((faculty) => faculty.id !== id));
-  // };
-
   return (
     <div>
       <div className="heading">Quản lý khoa</div>
-      <div style={{display:'flex', justifyContent:'flex-end', margin: 16}}>
+      <div style={{ display: "flex", justifyContent: "flex-end", margin: 16 }}>
         <Button type="primary" onClick={showModal}>
           Thêm khoa
         </Button>
