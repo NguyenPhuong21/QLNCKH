@@ -326,7 +326,7 @@ const AssignTopics = () => {
 
   return (
     <>
-      <div className="heading">Đăng kí đề tài</div>
+      <div className="heading">Danh sách đề tài</div>
       <div style={{ display: "flex", justifyContent: "flex-end", margin: 16 }}>
         <Button type="primary" onClick={showModal}>
           Thêm đề tài
