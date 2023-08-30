@@ -10,7 +10,6 @@ function AddStudent({ setStudentList, id, lastId, deleteStd }) {
     SetName(e.target.value)
     setStudentList((prev) => {
       const std = prev.find((s, i) => s.id === (id-1));
-      console.log(std);
       if (std) {
         std.name = e.target.value;
         return [...prev];

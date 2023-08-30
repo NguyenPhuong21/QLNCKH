@@ -67,7 +67,6 @@ const IndustryManagement = () => {
   };
 
   const handlePostIndustryManagement = async () => {
-    console.log('form.getFieldValue("khoa")', form.getFieldValue("khoa"));
     let obj;
     try {
       if (!id) {

@@ -277,7 +277,6 @@ const StudentManagement = () => {
   };
 
   const handleEdit = (record) => {
-    console.log(record);
     const nganhId = industry.find(
       (item) => item.nganh === record?.Ten_nganh
     )?.id;
