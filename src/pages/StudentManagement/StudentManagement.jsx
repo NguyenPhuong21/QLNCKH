@@ -346,7 +346,6 @@ const StudentManagement = () => {
               >
                 <DatePicker
                   format={"DD-MM-YYYY"}
-                  renderExtraFooter={() => "extra footer"}
                   placeholder="Chọn ngày sinh"
                   style={{ width: "100%" }}
                 />

@@ -23,9 +23,10 @@ a {
 }
 
 .status-custom span {
+  font-size: 13px;
   display: block;
   border-radius: 50px;
-  padding: 2px 16px;
+  padding: 1px 12px;
   color: white;
   min-width: 65%;
 }

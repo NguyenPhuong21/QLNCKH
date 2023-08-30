@@ -54,8 +54,7 @@ const NavBar = () => {
 
   return (
     <div className="App">
-      <p>MAIN</p>
-      <Divider type="horizontal" style={{ color: "red", marginTop: "30px"  }} />
+      <Divider type="horizontal" style={{ color: "red", marginTop: "2px"  }} />
       <Menu mode="inline" style={{ width: "100%" }}>
         <Menu.Item key="dashboard" icon={<DashboardOutlined />}>
           <Link to="/Dashboard">Trang chủ</Link>
@@ -119,8 +118,7 @@ const NavBar = () => {
           </Menu.Item>
         </SubMenu> */}
       </Menu>
-      <Divider type="horizontal" style={{ color: "red", marginTop: "30px" }} />
-      <p>Setting</p>
+      {/* <Divider type="horizontal" style={{ color: "red", marginTop: "30px" }} /> */}
     </div>
   );
 };
