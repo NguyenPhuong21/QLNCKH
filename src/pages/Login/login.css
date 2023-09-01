@@ -124,6 +124,14 @@
   margin-top: 12px;
   cursor: pointer;
 }
+.sigin-pwd {
+  color: #4285f4;
+  font-size: 13px;
+  font-weight: 400;
+  text-align: left;
+  margin-top: 12px;
+  cursor: pointer;
+}
 .btn-login {
   border-radius: 10px;
   background: #0089ed;

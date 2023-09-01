@@ -188,7 +188,7 @@ const NAVBAR = {
           icon: <RightOutlined />,
         },
         {
-          label: "Quản lý ngành",
+          label: "Quản lý bộ môn",
           key: "industryManagement",
           url: "/IndustryManagement",
           icon: <RightOutlined />,

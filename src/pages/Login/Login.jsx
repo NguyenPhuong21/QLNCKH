@@ -63,9 +63,8 @@ const Login = () => {
             <h2>Quản lý</h2>
             <h3>Nghiêm cứu khoa học sinh viên</h3>
             <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s,
+            Khám phá Nghiên cứu Khoa học của Sinh viên Trường Đại học Mỏ Địa chất: 
+            Khai phá tri thức và đóng góp bền vững vào sự phát triển tương lai của đất nước.
             </p>
           </div>
           <div>
@@ -115,6 +114,7 @@ const Login = () => {
               </div>
             </>
           )}
+
           {isForgot ? (
             <p className="forget-pwd" onClick={() => setIsForgot(false)}>
               Đã có tài khoản?
@@ -122,6 +122,15 @@ const Login = () => {
           ) : (
             <p className="forget-pwd" onClick={() => setIsForgot(true)}>
               Quên mật khẩu?
+            </p>
+          )}
+                     {isForgot ? (
+            <p className="sigin-pwd" onClick={() => setIsForgot(false)}>
+              Đã có tài khoản?
+            </p>
+          ) : (
+            <p className="sigin-pwd" onClick={() => setIsForgot(true)}>
+              Đăng kí?
             </p>
           )}
           {errorMessage && !isForgot && <p>{errorMessage}</p>}

@@ -48,7 +48,7 @@ const App = () => {
           <Route exact path="/FacultyManagement">
             <FacultyManagement />
           </Route>
-          {/* quản lý Ngành */}
+          {/* quản lý Bộ môn */}
           <Route exact path="/IndustryManagement">
             <IndustryManagement />
           </Route>

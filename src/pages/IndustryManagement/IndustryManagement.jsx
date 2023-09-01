@@ -185,17 +185,17 @@ const IndustryManagement = () => {
 
   return (
     <div>
-      <div className="heading">Quản lý Ngành</div>
+      <div className="heading">Quản lý bộ môn</div>
       <div style={{ display: "flex", justifyContent: "flex-end", margin: 16 }}>
         <Button type="primary" onClick={showModal}>
-          Thêm Ngành
+          Thêm bộ môn
         </Button>
       </div>
       <Table columns={columns} dataSource={industry} rowKey="id" />
 
       <Modal
         visible={visible}
-        title="Thêm/sửa Ngành"
+        title="Thêm/sửa bộ môn"
         onCancel={handleCancel}
         onOk={handlePostIndustryManagement}
       >
