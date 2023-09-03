@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { deleteIcon } from "../../assets";
 import CustomButton from "../../components/CustomButton";
+import UploadBtn from "../../components/UploadButton";
 import { editIcon } from "../../assets";
 
 const AssignTopics = () => {
@@ -28,6 +29,7 @@ const AssignTopics = () => {
   const [industry, setIndustry] = useState([]);
   const [lecturer, setLecturer] = useState([]);
   const [status, setStatus] = useState([]);
+  const [documentLink, getDocumentLink] = useState("");
 
   const { TextArea } = Input;
   useEffect(() => {
@@ -171,11 +173,11 @@ const AssignTopics = () => {
       url: `/de-tais/${record.id}`,
     };
     await Delete(obj);
-      notification.success({
-        message: "Đã xóa thành công đề tài",
-        duration: 3,
-      });
-      handleGetAssignTopics();
+    notification.success({
+      message: "Đã xóa thành công đề tài",
+      duration: 3,
+    });
+    handleGetAssignTopics();
   };
 
   const columns = [
@@ -185,14 +187,14 @@ const AssignTopics = () => {
       key: "id",
       align: "center",
       width: 60,
-      fixed: 'left',
+      fixed: "left",
     },
     {
       title: "Tên đề tài",
       dataIndex: "TenDeTai",
       key: "TenDeTai",
       width: 300,
-      fixed: 'left',
+      fixed: "left",
     },
     {
       title: "Tên giảng viên",
@@ -270,7 +272,7 @@ const AssignTopics = () => {
       align: "center",
       width: 120,
       align: "center",
-      fixed: 'right',
+      fixed: "right",
       render: (_, record) => (
         <Space size="middle">
           <Button
@@ -326,13 +328,18 @@ const AssignTopics = () => {
 
   return (
     <>
-      <div className="heading">Danh sách đề tài</div>
+      <div className="heading">Danh sách đề tài 📕</div>
       <div style={{ display: "flex", justifyContent: "flex-end", margin: 16 }}>
         <Button type="primary" onClick={showModal}>
           Thêm đề tài
         </Button>
       </div>
-      <Table columns={columns} dataSource={lecturers} rowKey="id"  scroll={{ y: 620 }}/>
+      <Table
+        columns={columns}
+        dataSource={lecturers}
+        rowKey="id"
+        scroll={{ y: 620 }}
+      />
       <Modal
         visible={visible}
         title="Thêm/sửa đề tài"
@@ -506,7 +513,11 @@ const AssignTopics = () => {
               </Form.Item>
             </div>
           </div>
-          <div>link đề tài</div>
+
+          <UploadBtn
+            title={"Chọn file báo cáo"}
+            getDocumentLink={getDocumentLink}
+          />
         </Form>
       </Modal>
     </>

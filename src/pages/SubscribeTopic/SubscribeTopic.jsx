@@ -15,6 +15,7 @@ import CustomButton from "../../components/CustomButton";
 import { deleteIcon, editIcon } from "../../assets";
 import { get, Post, Put, Delete } from "../../services/Api";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import UploadButton from "../../components/UploadButton";
 
 const SubscribeTopic = () => {
   const [form] = Form.useForm();
@@ -26,6 +27,7 @@ const SubscribeTopic = () => {
   const [student, setStudent] = useState([]);
   const [lecturer, setLecturer] = useState([]);
   const [topic, setTopic] = useState([]);
+  const [documentLink, getDocumentLink] = useState("");
 
   const { TextArea } = Input;
   useEffect(() => {
@@ -465,6 +467,14 @@ const SubscribeTopic = () => {
                   })}
                 />
               </Form.Item>
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ width: "48%" }}>
+              <UploadButton
+                title="Link đề tài"
+                getDocumentLink={getDocumentLink}
+              />
             </div>
           </div>
         </Form>
