@@ -73,7 +73,6 @@ const FacultyManagement = () => {
       form.resetFields();
       handleGetFacutyManagement();
       setVisible(false);
-      return response;
     } catch (error) {
       console.error("Error faculyty:", error);
     }

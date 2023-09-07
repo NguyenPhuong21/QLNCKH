@@ -10,6 +10,7 @@ import {
   DatePicker,
   Popconfirm,
   Image,
+  notification,
 } from "antd";
 import "react-quill/dist/quill.snow.css";
 import { get, Post, Put, Delete } from "../../services/Api";
@@ -162,7 +163,6 @@ const AssignTopics = () => {
       form.resetFields();
       handleGetAssignTopics();
       setVisible(false);
-      return response;
     } catch (error) {
       console.error("Error faculyty:", error);
     }
@@ -498,7 +498,6 @@ const AssignTopics = () => {
                       .localeCompare((optionB?.label ?? "").toLowerCase())
                   }
                   options={lecturer.map((item) => {
-                    console.log("lecturer", lecturer);
                     return {
                       label: item?.TenGiangVien,
                       value: item.id,
